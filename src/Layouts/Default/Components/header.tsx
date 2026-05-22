@@ -2,11 +2,11 @@ import {
   AppBar,
   Box,
   Button,
+  Container,
   IconButton,
   InputBase,
   Stack,
   ThemeProvider,
-  Toolbar,
   Typography,
 } from '@mui/material';
 
@@ -28,29 +28,25 @@ import { defaultTheme } from '@/theme';
 // top cata from BE
 const NAV_LINKS = [
   { label: 'SuperDeals', color: '#e62e04', fontWeight: 700 },
-  { label: 'AliExpress Business' },
-  { label: 'Automotive' },
-  { label: 'Appliances' },
-  { label: "Women's Clothing" },
-  { label: "Men's Clothing" },
-  { label: 'Toys & Games' },
-  { label: 'Furniture' },
-  { label: 'Beauty & Health' },
-  { label: 'Shoes' },
+  { label: 'Vender gate' },
+  { label: 'Customer service' },
 ];
+
+const headerWidth = 1600;
 
 const HeaderComponent: React.FC = () => {
   const navigate = useNavigate();
   return (
     <ThemeProvider theme={defaultTheme}>
       <AppBar position="static" elevation={0} sx={{ bgcolor: '#fff' }}>
-        <Toolbar
+        <Container
           sx={{
             gap: 2,
             px: 2,
             py: 1,
-            minHeight: 'unset',
             display: 'flex',
+            width: headerWidth,
+            maxWidth: 'unset !important',
             justifyContent: 'center',
           }}
         >
@@ -306,13 +302,9 @@ const HeaderComponent: React.FC = () => {
               </Stack>
             </Stack>
           </Stack>
-        </Toolbar>
+        </Container>
 
-        <Toolbar
-          sx={{
-            px: '88px !important',
-          }}
-        >
+        <Container sx={{ display: 'flex', px: '88px', flexDirection: 'row', width: headerWidth, maxWidth: 'unset !important', justifyContent: 'flex-start' }}>
           <Button
             startIcon={<MenuIcon />}
             sx={{
@@ -331,7 +323,7 @@ const HeaderComponent: React.FC = () => {
             All Categories
           </Button>
 
-          <Box sx={{ display: 'flex', justifyContent: 'center !important' }}>
+          <Box sx={{width: 'auto'}}>
             {NAV_LINKS.map((link, index) => (
               <Button
                 key={index}
@@ -342,8 +334,6 @@ const HeaderComponent: React.FC = () => {
                   textTransform: 'none',
                   px: 1.5,
                   py: 1,
-                  minWidth: 'unset',
-                  borderRadius: 0,
                   '&:hover': { color: link.color ?? '#333', bgcolor: 'transparent' },
                 }}
               >
@@ -351,7 +341,7 @@ const HeaderComponent: React.FC = () => {
               </Button>
             ))}
           </Box>
-        </Toolbar>
+        </Container>
       </AppBar>
     </ThemeProvider>
   );
