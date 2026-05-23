@@ -3,9 +3,9 @@ import { IDefaultReactProps } from '@/Types';
 import HeaderComponent from '@/Layouts/Components/BaseHeader';
 import FooterComponent from '@/Layouts/Components/BaseFooter';
 
-const DefaultLayout: React.FC<IDefaultReactProps> = ({ children }) => {
+const AdminLayout: React.FC<IDefaultReactProps> = ({ children }) => {
   return (
-    <div>
+    <div style={{ paddingLeft: 88, paddingRight: 88 }}>
       <HeaderComponent />
       {children}
       <FooterComponent />
@@ -13,4 +13,4 @@ const DefaultLayout: React.FC<IDefaultReactProps> = ({ children }) => {
   );
 };
 
-export default DefaultLayout;
+export default AdminLayout;

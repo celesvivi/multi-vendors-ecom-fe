@@ -3,7 +3,7 @@ import { IDefaultReactProps } from '@/Types';
 import HeaderComponent from '@/Layouts/Components/BaseHeader';
 import FooterComponent from '@/Layouts/Components/BaseFooter';
 
-const DefaultLayout: React.FC<IDefaultReactProps> = ({ children }) => {
+const VenderLayout: React.FC<IDefaultReactProps> = ({ children }) => {
   return (
     <div>
       <HeaderComponent />
@@ -13,4 +13,4 @@ const DefaultLayout: React.FC<IDefaultReactProps> = ({ children }) => {
   );
 };
 
-export default DefaultLayout;
+export default VenderLayout;
