@@ -304,7 +304,16 @@ const HeaderComponent: React.FC = () => {
           </Stack>
         </Container>
 
-        <Container sx={{ display: 'flex', px: '88px', flexDirection: 'row', width: headerWidth, maxWidth: 'unset !important', justifyContent: 'flex-start' }}>
+        <Container
+          sx={{
+            display: 'flex',
+            px: '88px',
+            flexDirection: 'row',
+            width: headerWidth,
+            maxWidth: 'unset !important',
+            justifyContent: 'flex-start',
+          }}
+        >
           <Button
             startIcon={<MenuIcon />}
             sx={{
@@ -323,7 +332,7 @@ const HeaderComponent: React.FC = () => {
             All Categories
           </Button>
 
-          <Box sx={{width: 'auto'}}>
+          <Box sx={{ width: 'auto' }}>
             {NAV_LINKS.map((link, index) => (
               <Button
                 key={index}
