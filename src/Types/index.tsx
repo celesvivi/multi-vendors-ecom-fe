@@ -8,4 +8,9 @@ interface IRoute {
   layout: React.FC<IDefaultReactProps> | null;
 }
 
-export type { IDefaultReactProps, IRoute };
+type HttpMethods = 'get' | 'post' | 'put' | 'delete';
+
+export type { 
+  HttpMethods,
+  IDefaultReactProps, IRoute 
+};
