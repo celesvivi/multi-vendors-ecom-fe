@@ -8,6 +8,8 @@ interface IRoute {
   layout: React.FC<IDefaultReactProps> | null;
 }
 
+type HttpMethods = 'get' | 'post' | 'put' | 'delete';
+
 enum UserRole {
   Customer = 'customer',
   Vender = 'vender',
@@ -15,5 +17,8 @@ enum UserRole {
   Admin = 'admin',
 }
 
-export type { IDefaultReactProps, IRoute };
+export type { 
+  HttpMethods,
+  IDefaultReactProps, IRoute
+};
 export { UserRole };
