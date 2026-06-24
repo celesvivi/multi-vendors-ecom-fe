@@ -17,8 +17,11 @@ enum UserRole {
   Admin = 'admin',
 }
 
-export type { 
-  HttpMethods,
-  IDefaultReactProps, IRoute
-};
-export { UserRole };
+enum UserType {
+  FrontUser = 'front_user',
+  EndUser = 'end_user',
+}
+
+export type { HttpMethods, IDefaultReactProps, IRoute };
+
+export { UserRole, UserType };

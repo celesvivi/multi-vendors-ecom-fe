@@ -7,7 +7,7 @@ import DefaultLayout from '@/Layouts/Default';
 import VenderLayout from '@/Layouts/Vendor';
 import AdminLayout from '@/Layouts/Admin';
 
-import FrontUserSigninPage from '@/Pages/FrontUserSignin';
+import FrontUserSigninPage from '@/Pages/FrontUserSignIn';
 import EndUserSigninPage from '@/Pages/EndUserSignin';
 import SigninLayout from '@/Layouts/Signin';
 

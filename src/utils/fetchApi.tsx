@@ -8,7 +8,7 @@ export const requestAPI = (
   endpoint: string,
   method: HttpMethods,
   body?: unknown,
-  responseType: AxiosRequestConfig['responseType'] = 'json',
+  responseType: AxiosRequestConfig['responseType'] = 'json'
 ) => {
   const headers = {
     Accept: 'application/json',
@@ -29,7 +29,7 @@ export const requestAPI = (
       }
       return config;
     },
-    (error) => Promise.reject(error),
+    (error) => Promise.reject(error)
   );
 
   instance.interceptors.response.use(
@@ -42,7 +42,7 @@ export const requestAPI = (
           const res = await axios.post(
             `${API_URL}${AUTH_API_URLS.GEN_ACCESS_TOKEN}`,
             {},
-            { withCredentials: true },
+            { withCredentials: true }
           );
 
           const { token } = res.data.data;
@@ -56,7 +56,7 @@ export const requestAPI = (
         }
       }
       return Promise.reject(error);
-    },
+    }
   );
 
   return instance.request({

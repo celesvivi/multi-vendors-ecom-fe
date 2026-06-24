@@ -7,6 +7,4 @@ const AUTH_API_URLS = {
   SIGNOUT: '/auth/signout',
 };
 
-export {
-  AUTH_API_URLS,
-};
+export { AUTH_API_URLS };

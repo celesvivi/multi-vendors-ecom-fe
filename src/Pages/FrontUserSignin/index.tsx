@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
@@ -26,16 +26,93 @@ import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
-import background from '@/Assest/Background/FrontUserSignIn.png';
+import ErrorIcon from '@mui/icons-material/Error';
 
-import { UserRole } from '@/Types';
+import background from '@/Assest/Background/FrontUserSignIn.png';
+import { UserRole, UserType } from '@/Types';
 import { defaultTheme } from '@/theme';
+import { signInBody } from '@/Types/payload';
+import { requestAPI } from '@/utils/fetchApi';
+import { AUTH_API_URLS } from '@/utils/ApiUrl';
 
 const FrontUserSigninPage: React.FC = () => {
   const [role, setRole] = useState<UserRole>(UserRole.Customer);
 
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState<string[]>([]);
+  const [emailTouched, setEmailTouched] = useState(false);
+
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  const [isNotFound, setIsNotFound] = useState(false);
+
   const [showPassword, setShowPassword] = useState(false);
   const [remember, setRemember] = useState(false);
+
+  const [isSummit, setIsSummit] = useState(false);
+
+  useEffect(() => {
+    if (!emailTouched) return;
+
+    setEmailError([]);
+
+    const timer = setTimeout(() => {
+      if (!email) {
+        setEmailError(['Email is required!!']);
+      }
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+        setEmailError(['Invalid email address']);
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [email, emailTouched, isSummit]);
+
+  useEffect(() => {
+    if (!passwordTouched) return;
+
+    setPasswordError('');
+
+    const timer = setTimeout(() => {
+      if (!password) setPasswordError('Password is empty!!');
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [password, passwordTouched, isSummit]);
+
+  useEffect(() => {
+    if (isSummit) setIsNotFound(false);
+  }, [isSummit]);
+
+  const handleSummit = async () => {
+    setIsSummit(true);
+    if (!password || !email) return;
+
+    const payload: signInBody = {
+      email: email,
+      password: password,
+      userType: UserType.FrontUser,
+    };
+
+    let res;
+
+    try {
+      res = await requestAPI(AUTH_API_URLS.SIGNIN, 'post', payload);
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('userId', res.data.user_id);
+    } catch (err: any) {
+      if (err?.response?.status === 404) {
+        setIsNotFound(true);
+        setEmailTouched(false);
+        setPasswordTouched(false);
+        return;
+      }
+      console.log(err);
+    } finally {
+      setIsSummit(false);
+    }
+  };
 
   return (
     <ThemeProvider theme={defaultTheme}>
@@ -103,8 +180,7 @@ const FrontUserSigninPage: React.FC = () => {
                 gap: 1,
               }}
             >
-              Customer
-              <ShoppingCartIcon />
+              Customer <ShoppingCartIcon />
             </Button>
             <Button
               onClick={() => setRole(UserRole.Vender)}
@@ -124,16 +200,37 @@ const FrontUserSigninPage: React.FC = () => {
                 gap: 1,
               }}
             >
-              <StorefrontIcon />
-              Vendor
+              <StorefrontIcon /> Vendor
             </Button>
           </ButtonGroup>
 
+          {isNotFound && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                mb: 2,
+                p: 1.5,
+                border: '1px solid red',
+                borderRadius: 1,
+              }}
+            >
+              <ErrorIcon color="error" />
+              <Typography variant="body2" color="error">
+                Tên tài khoản của bạn hoặc Mật khẩu không đúng, vui lòng thử lại
+              </Typography>
+            </Box>
+          )}
+
           <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2 }}>
-            <Typography variant="caption" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-              Email
-            </Typography>
             <TextField
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => setEmailTouched(true)}
+              error={emailTouched && emailError.length > 0}
+              helperText={emailTouched ? (emailError[0] ?? '') : ''}
               fullWidth
               slotProps={{
                 input: {
@@ -146,20 +243,21 @@ const FrontUserSigninPage: React.FC = () => {
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  '&:has(input:-webkit-autofill)': {
-                    backgroundColor: '#faffbd',
-                  },
+                  '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
                 },
               }}
             />
           </Box>
 
           <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2 }}>
-            <Typography variant="caption" sx={{ fontWeight: 500, color: 'text.secondary' }}>
-              Password
-            </Typography>
             <TextField
               fullWidth
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => setPasswordTouched(true)}
+              error={passwordTouched && passwordError.length > 0}
+              helperText={passwordTouched ? passwordError : ''}
               type={showPassword ? 'text' : 'password'}
               slotProps={{
                 input: {
@@ -187,9 +285,7 @@ const FrontUserSigninPage: React.FC = () => {
               }}
               sx={{
                 '& .MuiOutlinedInput-root': {
-                  '&:has(input:-webkit-autofill)': {
-                    backgroundColor: '#faffbd',
-                  },
+                  '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
                 },
               }}
             />
@@ -219,6 +315,12 @@ const FrontUserSigninPage: React.FC = () => {
           </Box>
 
           <Button
+            onClick={() => handleSummit()}
+            disabled={
+              isSummit ||
+              (passwordTouched && passwordError.length > 0) ||
+              (emailTouched && emailError.length > 0)
+            }
             fullWidth
             variant="contained"
             sx={{
