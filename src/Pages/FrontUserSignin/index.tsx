@@ -13,6 +13,8 @@ import {
   Typography,
 } from '@mui/material';
 
+import { useNavigate } from 'react-router-dom';
+
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
@@ -30,12 +32,17 @@ import ErrorIcon from '@mui/icons-material/Error';
 
 import background from '@/Assest/Background/FrontUserSignIn.png';
 import { UserRole, UserType } from '@/Types';
-import { defaultTheme } from '@/theme';
 import { signInBody } from '@/Types/payload';
+
 import { requestAPI } from '@/utils/fetchApi';
 import { AUTH_API_URLS } from '@/utils/ApiUrl';
+import { afterSignInLink } from '@/Types/linked';
+
+import { defaultTheme } from '@/theme';
 
 const FrontUserSigninPage: React.FC = () => {
+  const navigate = useNavigate();
+
   const [role, setRole] = useState<UserRole>(UserRole.Customer);
 
   const [email, setEmail] = useState('');
@@ -101,6 +108,7 @@ const FrontUserSigninPage: React.FC = () => {
       res = await requestAPI(AUTH_API_URLS.SIGNIN, 'post', payload);
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('userId', res.data.user_id);
+      navigate(afterSignInLink[role]);
     } catch (err: any) {
       if (err?.response?.status === 404) {
         setIsNotFound(true);
@@ -244,7 +252,9 @@ const FrontUserSigninPage: React.FC = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
                 },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'primary.main' },
               }}
             />
           </Box>
@@ -286,7 +296,9 @@ const FrontUserSigninPage: React.FC = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
                 },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'primary.main' },
               }}
             />
           </Box>

@@ -8,7 +8,7 @@ import VenderLayout from '@/Layouts/Vendor';
 import AdminLayout from '@/Layouts/Admin';
 
 import FrontUserSigninPage from '@/Pages/FrontUserSignIn';
-import EndUserSigninPage from '@/Pages/EndUserSignin';
+import EndUserSigninPage from '@/Pages/EndUserSignIn';
 import SigninLayout from '@/Layouts/Signin';
 
 const publicRoutes: IRoute[] = [
