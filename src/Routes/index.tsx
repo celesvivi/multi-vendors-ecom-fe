@@ -6,7 +6,11 @@ import LandingPage from '@/Pages/LandingPage';
 import DefaultLayout from '@/Layouts/Default';
 import VenderLayout from '@/Layouts/Vendor';
 import AdminLayout from '@/Layouts/Admin';
-import UserLayout from '@/Layouts/User';
+
+import FrontUserSigninPage from '@/Pages/FrontUserSignIn';
+import FrontUserSignupPage from '@/Pages/FrontUserSignUp';
+import EndUserSigninPage from '@/Pages/EndUserSignIn';
+import SigninLayout from '@/Layouts/Signin';
 
 const publicRoutes: IRoute[] = [
   { path: '', component: LandingPage, layout: DefaultLayout },
@@ -15,9 +19,9 @@ const publicRoutes: IRoute[] = [
   { path: '/item/:id', component: NotFound, layout: DefaultLayout },
   { path: '/brand/:id', component: NotFound, layout: DefaultLayout },
   { path: '/flashdeal', component: NotFound, layout: DefaultLayout },
-  { path: '/user/signin', component: NotFound, layout: UserLayout },
-  { path: '/vender/signin', component: NotFound, layout: null },
-  { path: '/admin/signin', component: NotFound, layout: null },
+  { path: '/front_user/signin', component: FrontUserSigninPage, layout: SigninLayout },
+  { path: '/front_user/signup', component: FrontUserSignupPage, layout: SigninLayout },
+  { path: '/end_user/signin', component: EndUserSigninPage, layout: SigninLayout },
 ];
 
 const privateRoutes: IRoute[] = [

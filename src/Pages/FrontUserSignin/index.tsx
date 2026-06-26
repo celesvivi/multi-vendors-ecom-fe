@@ -1,0 +1,406 @@
+import { useEffect, useState } from 'react';
+import {
+  Box,
+  Button,
+  ButtonGroup,
+  Checkbox,
+  FormControlLabel,
+  IconButton,
+  InputAdornment,
+  Link,
+  TextField,
+  ThemeProvider,
+  Typography,
+} from '@mui/material';
+
+import { useNavigate } from 'react-router-dom';
+
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
+
+import GoogleIcon from '@mui/icons-material/Google';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
+
+import StorefrontIcon from '@mui/icons-material/Storefront';
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+
+import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
+import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
+
+import ErrorIcon from '@mui/icons-material/Error';
+
+import background from '@/Assest/Background/FrontUserSignIn.png';
+import { UserRole, UserType } from '@/Types';
+import { signInBody } from '@/Types/payload';
+
+import { requestAPI } from '@/utils/fetchApi';
+import { AUTH_API_URLS } from '@/utils/ApiUrl';
+import { afterSignInLink } from '@/Types/linked';
+
+import { defaultTheme } from '@/theme';
+
+const FrontUserSigninPage: React.FC = () => {
+  const navigate = useNavigate();
+
+  const [role, setRole] = useState<UserRole>(UserRole.Customer);
+
+  const [email, setEmail] = useState('');
+  const [emailError, setEmailError] = useState<string[]>([]);
+  const [emailTouched, setEmailTouched] = useState(false);
+
+  const [password, setPassword] = useState('');
+  const [passwordError, setPasswordError] = useState<string>('');
+  const [passwordTouched, setPasswordTouched] = useState(false);
+
+  const [isNotFound, setIsNotFound] = useState(false);
+
+  const [showPassword, setShowPassword] = useState(false);
+  const [remember, setRemember] = useState(false);
+
+  const [isSummit, setIsSummit] = useState(false);
+
+  useEffect(() => {
+    if (!emailTouched) return;
+
+    setEmailError([]);
+
+    const timer = setTimeout(() => {
+      if (!email) {
+        setEmailError(['Email is required!!']);
+      }
+      if (email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email))
+        setEmailError(['Invalid email address']);
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [email, emailTouched, isSummit]);
+
+  useEffect(() => {
+    if (!passwordTouched) return;
+
+    setPasswordError('');
+
+    const timer = setTimeout(() => {
+      if (!password) setPasswordError('Password is empty!!');
+    }, 350);
+
+    return () => clearTimeout(timer);
+  }, [password, passwordTouched, isSummit]);
+
+  useEffect(() => {
+    if (isSummit) setIsNotFound(false);
+  }, [isSummit]);
+
+  const handleSummit = async () => {
+    setIsSummit(true);
+    if (!password || !email) return;
+
+    const payload: signInBody = {
+      email: email,
+      password: password,
+      userType: UserType.FrontUser,
+    };
+
+    let res;
+
+    try {
+      res = await requestAPI(AUTH_API_URLS.SIGNIN, 'post', payload);
+      localStorage.setItem('accessToken', res.data.accessToken);
+      localStorage.setItem('userId', res.data.user_id);
+      navigate(afterSignInLink[role]);
+    } catch (err: any) {
+      if (err?.response?.status === 404) {
+        setIsNotFound(true);
+        setEmailTouched(false);
+        setPasswordTouched(false);
+        return;
+      }
+      console.log(err);
+    } finally {
+      setIsSummit(false);
+    }
+  };
+
+  return (
+    <ThemeProvider theme={defaultTheme}>
+      <Box
+        sx={{
+          minHeight: '100vh',
+          width: '100%',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'space-between',
+          bgcolor: '#EE4D2D',
+          px: 32,
+        }}
+      >
+        <Box
+          sx={{
+            flex: 1,
+            display: 'flex',
+            flexDirection: 'row',
+            alignItems: 'flex-start',
+            pl: 8,
+            pr: 4,
+            maxWidth: 480,
+          }}
+        >
+          <Box component="img" src={background} />
+        </Box>
+
+        <Box
+          sx={{
+            bgcolor: 'white',
+            boxShadow: '0 4px 40px rgba(0,0,0,0.08)',
+            height: '100vh',
+            width: '100%',
+            maxWidth: 420,
+            p: 5,
+            display: 'flex',
+            flexDirection: 'column',
+            justifyContent: 'center',
+          }}
+        >
+          <Typography
+            variant="h4"
+            sx={{ mb: 3, textAlign: 'center', color: '7777cc', fontWeight: 600 }}
+          >
+            Đăng nhập
+          </Typography>
+
+          <ButtonGroup fullWidth sx={{ mb: 3 }}>
+            <Button
+              onClick={() => setRole(UserRole.Customer)}
+              variant={role === UserRole.Customer ? 'contained' : 'outlined'}
+              sx={{
+                borderRadius: '8px 0 0 8px',
+                textTransform: 'none',
+                fontWeight: 600,
+                bgcolor: role === UserRole.Customer ? 'primary.main' : 'transparent',
+                borderColor: 'primary.main',
+                color: role === UserRole.Customer ? 'white' : 'primary.main',
+                '&:hover': {
+                  bgcolor: role === UserRole.Customer ? 'primary.heavy' : '#f0f0ff',
+                  borderColor: 'primary.main',
+                },
+                py: 1.4,
+                gap: 1,
+              }}
+            >
+              Customer <ShoppingCartIcon />
+            </Button>
+            <Button
+              onClick={() => setRole(UserRole.Vender)}
+              variant={role === UserRole.Vender ? 'contained' : 'outlined'}
+              sx={{
+                borderRadius: '0 8px 8px 0',
+                textTransform: 'none',
+                fontWeight: 600,
+                bgcolor: role === UserRole.Vender ? 'primary.main' : 'transparent',
+                borderColor: 'primary.main',
+                color: role === UserRole.Vender ? 'white' : 'primary.main',
+                '&:hover': {
+                  bgcolor: role === UserRole.Vender ? 'primary.heavy' : '#f0f0ff',
+                  borderColor: 'primary.main',
+                },
+                py: 1.4,
+                gap: 1,
+              }}
+            >
+              <StorefrontIcon /> Vendor
+            </Button>
+          </ButtonGroup>
+
+          {isNotFound && (
+            <Box
+              sx={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: 1,
+                mb: 2,
+                p: 1.5,
+                border: '1px solid red',
+                borderRadius: 1,
+              }}
+            >
+              <ErrorIcon color="error" />
+              <Typography variant="body2" color="error">
+                Tên tài khoản của bạn hoặc Mật khẩu không đúng, vui lòng thử lại
+              </Typography>
+            </Box>
+          )}
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2 }}>
+            <TextField
+              label="Email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              onBlur={() => setEmailTouched(true)}
+              error={emailTouched && emailError.length > 0}
+              helperText={emailTouched ? (emailError[0] ?? '') : ''}
+              fullWidth
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <AlternateEmailIcon sx={{ color: '#aaa', fontSize: 20 }} />
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
+                },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'primary.main' },
+              }}
+            />
+          </Box>
+
+          <Box sx={{ display: 'flex', flexDirection: 'column', pb: 2 }}>
+            <TextField
+              fullWidth
+              label="Password"
+              value={password}
+              onChange={(e) => setPassword(e.target.value)}
+              onBlur={() => setPasswordTouched(true)}
+              error={passwordTouched && passwordError.length > 0}
+              helperText={passwordTouched ? passwordError : ''}
+              type={showPassword ? 'text' : 'password'}
+              slotProps={{
+                input: {
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <LockOutlinedIcon sx={{ color: '#aaa', fontSize: 20 }} />
+                    </InputAdornment>
+                  ),
+                  endAdornment: (
+                    <InputAdornment position="end">
+                      <IconButton
+                        size="small"
+                        onClick={() => setShowPassword((p) => !p)}
+                        edge="end"
+                      >
+                        {showPassword ? (
+                          <VisibilityOffOutlinedIcon sx={{ fontSize: 18, color: '#aaa' }} />
+                        ) : (
+                          <VisibilityOutlinedIcon sx={{ fontSize: 18, color: '#aaa' }} />
+                        )}
+                      </IconButton>
+                    </InputAdornment>
+                  ),
+                },
+              }}
+              sx={{
+                '& .MuiOutlinedInput-root': {
+                  '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
+                },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'primary.main' },
+              }}
+            />
+          </Box>
+
+          <Box
+            sx={{ mb: 3, alignItems: 'center', justifyContent: 'space-between', display: 'flex' }}
+          >
+            <FormControlLabel
+              control={
+                <Checkbox
+                  size="small"
+                  checked={remember}
+                  onChange={(e) => setRemember(e.target.checked)}
+                  sx={{ color: 'primary.main', '&.Mui-checked': { color: 'primary.main' } }}
+                />
+              }
+              label={
+                <Typography variant="caption" color="text.secondary">
+                  Remember Login
+                </Typography>
+              }
+            />
+            <Link href="#" underline="hover" variant="caption" sx={{ color: 'primary.main' }}>
+              Forgot Password?
+            </Link>
+          </Box>
+
+          <Button
+            onClick={() => handleSummit()}
+            disabled={
+              isSummit ||
+              (passwordTouched && passwordError.length > 0) ||
+              (emailTouched && emailError.length > 0)
+            }
+            fullWidth
+            variant="contained"
+            sx={{
+              bgcolor: 'primary.main',
+              borderRadius: 8,
+              textTransform: 'none',
+              fontWeight: 600,
+              fontSize: 15,
+              py: 1.4,
+              mb: 2,
+              '&:hover': { bgcolor: 'primary.heavy' },
+              boxShadow: '0 4px 16px rgba(92,92,200,0.3)',
+            }}
+          >
+            Log In
+          </Button>
+
+          <Box sx={{ mb: 2, alignItems: 'center', display: 'flex', gap: 1.5 }}>
+            <Box sx={{ bgcolor: '#e0e0e0', flex: 1, height: '1px' }} />
+            <Typography variant="caption" color="text.secondary">
+              OR
+            </Typography>
+            <Box sx={{ bgcolor: '#e0e0e0', flex: 1, height: '1px' }} />
+          </Box>
+
+          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 3 }}>
+            <IconButton
+              sx={{
+                border: '1px solid #e0e0e0',
+                borderRadius: 2,
+                p: 1,
+                '&:hover': { bgcolor: '#f0f5ff' },
+              }}
+            >
+              <FacebookIcon />
+            </IconButton>
+            <IconButton
+              sx={{
+                border: '1px solid #e0e0e0',
+                borderRadius: 2,
+                p: 1,
+                '&:hover': { bgcolor: '#fff5f5' },
+              }}
+            >
+              <GoogleIcon />
+            </IconButton>
+            <IconButton
+              sx={{
+                border: '1px solid #e0e0e0',
+                borderRadius: 2,
+                p: 1,
+                '&:hover': { bgcolor: '#f0faff' },
+              }}
+            >
+              <TwitterIcon />
+            </IconButton>
+          </Box>
+
+          <Typography variant="body2" sx={{ textAlign: 'center', color: 'text.secondary' }}>
+            Don't have account?{' '}
+            <Link href="#" sx={{ color: '#1a1a6e', underline: 'hover', fontWeight: 700 }}>
+              SignUp
+            </Link>
+          </Typography>
+        </Box>
+      </Box>
+    </ThemeProvider>
+  );
+};
+
+export default FrontUserSigninPage;

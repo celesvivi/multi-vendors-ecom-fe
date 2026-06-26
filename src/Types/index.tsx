@@ -10,7 +10,18 @@ interface IRoute {
 
 type HttpMethods = 'get' | 'post' | 'put' | 'delete';
 
-export type { 
-  HttpMethods,
-  IDefaultReactProps, IRoute 
-};
+enum UserRole {
+  Customer = 'customer',
+  Vender = 'vender',
+  Support = 'support',
+  Admin = 'admin',
+}
+
+enum UserType {
+  FrontUser = 'front_user',
+  EndUser = 'end_user',
+}
+
+export type { HttpMethods, IDefaultReactProps, IRoute };
+
+export { UserRole, UserType };
