@@ -82,10 +82,8 @@ const FrontUserSignupPage: React.FC = () => {
       userType: UserType.FrontUser,
     };
 
-    let res;
-
     try {
-      res = await requestAPI(AUTH_API_URLS.SIGNUP, 'post', payload);
+      const res = await requestAPI(AUTH_API_URLS.SIGNUP, 'post', payload);
       //toaster
     } catch (err: any) {
       if (err?.response?.status === 409) {
