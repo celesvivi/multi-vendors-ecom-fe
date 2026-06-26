@@ -8,6 +8,7 @@ import VenderLayout from '@/Layouts/Vendor';
 import AdminLayout from '@/Layouts/Admin';
 
 import FrontUserSigninPage from '@/Pages/FrontUserSignIn';
+import FrontUserSignupPage from '@/Pages/FrontUserSignUp';
 import EndUserSigninPage from '@/Pages/EndUserSignIn';
 import SigninLayout from '@/Layouts/Signin';
 
@@ -19,6 +20,7 @@ const publicRoutes: IRoute[] = [
   { path: '/brand/:id', component: NotFound, layout: DefaultLayout },
   { path: '/flashdeal', component: NotFound, layout: DefaultLayout },
   { path: '/front_user/signin', component: FrontUserSigninPage, layout: SigninLayout },
+  { path: '/front_user/signup', component: FrontUserSignupPage, layout: SigninLayout },
   { path: '/end_user/signin', component: EndUserSigninPage, layout: SigninLayout },
 ];
 
