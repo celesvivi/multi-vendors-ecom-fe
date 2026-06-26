@@ -7,6 +7,12 @@ const AUTH_API_URLS = {
   SIGNOUT: '/auth/signout',
 };
 
+const INFO_API_URLS = {
+  GET_INFO: '/info/',
+  UPDATE_INFO: '/info/',
+};
+
 export {
   AUTH_API_URLS,
+  INFO_API_URLS,
 };
