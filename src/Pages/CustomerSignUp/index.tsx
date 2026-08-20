@@ -25,8 +25,11 @@ import { defaultTheme } from '@/theme';
 import { signUpBody } from '@/Types/payload';
 import { requestAPI } from '@/utils/fetchApi';
 import { AUTH_API_URLS } from '@/utils/ApiUrl';
+import { useNavigate } from 'react-router-dom';
 
-const FrontUserSignupPage: React.FC = () => {
+const CustomerSignupPage: React.FC = () => {
+  const navigate = useNavigate()
+
   const [username, setUsername] = useState('');
   const [usernameError, setUsernameError] = useState<string>('');
   const [usernameTouched, setUsernameTouched] = useState(false);
@@ -284,7 +287,9 @@ const FrontUserSignupPage: React.FC = () => {
 
           <Typography variant="body2" sx={{ textAlign: 'center', color: 'text.secondary' }}>
             Already have an account?{' '}
-            <Link href="#" sx={{ color: '#1a1a6e', underline: 'hover', fontWeight: 700 }}>
+            <Link 
+              onClick={() => navigate('/front_user/signin')}
+              sx={{ color: '#1a1a6e', fontWeight: 700, textDecoration: 'none', '&:hover': { textDecoration: 'underline' } }}>
               Sign In
             </Link>
           </Typography>
@@ -294,4 +299,4 @@ const FrontUserSignupPage: React.FC = () => {
   );
 };
 
-export default FrontUserSignupPage;
+export default CustomerSignupPage;
