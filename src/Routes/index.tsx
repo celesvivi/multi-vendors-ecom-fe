@@ -9,8 +9,8 @@ import AdminLayout from '@/Layouts/Admin';
 
 import CustomerSigninPage from '@/Pages/CustomerSignIn';
 import CustomerSignupPage from '@/Pages/CustomerSignUp';
-import VenderSigninPage from '@/Pages/VenderSignIn';
-import EndUserSigninPage from '@/Pages/EndUserSignIn';
+import VenderSigninPage from '@/Pages/VenderSignIn';  
+import SupportSignInPage from '@/Pages/SupportSignIn';
 import SigninLayout from '@/Layouts/Signin';
 
 const publicRoutes: IRoute[] = [
@@ -24,7 +24,7 @@ const publicRoutes: IRoute[] = [
   { path: '/customer/signup', component: CustomerSignupPage, layout: SigninLayout },
   { path: '/vender/signin', component: VenderSigninPage, layout: SigninLayout },
   { path: '/vender/application', component: CustomerSignupPage, layout: SigninLayout },
-  { path: '/end_user/signin', component: EndUserSigninPage, layout: SigninLayout },
+  { path: '/support/signin', component: SupportSignInPage, layout: SigninLayout },
 ];
 
 const privateRoutes: IRoute[] = [
@@ -36,21 +36,29 @@ const privateRoutes: IRoute[] = [
   { path: '/user/message', component: NotFound, layout: null },
   { path: '/user/notification', component: NotFound, layout: null },
 
-  { path: '/vender', component: NotFound, layout: VenderLayout },
-  { path: '/vender/setting', component: NotFound, layout: VenderLayout },
-  { path: '/vender/profile', component: NotFound, layout: VenderLayout },
-  { path: '/vender/product', component: NotFound, layout: VenderLayout },
-  { path: '/vender/order', component: NotFound, layout: VenderLayout },
-  { path: '/vender/report', component: NotFound, layout: VenderLayout },
-  { path: '/user/notification', component: NotFound, layout: null },
+  { path: '/shop', component: NotFound, layout: VenderLayout },
+  { path: '/shop/setting', component: NotFound, layout: VenderLayout },
+  { path: '/shop/profile', component: NotFound, layout: VenderLayout },
+  { path: '/shop/product', component: NotFound, layout: VenderLayout },
+  { path: '/shop/order', component: NotFound, layout: VenderLayout },
+  { path: '/shop/report', component: NotFound, layout: VenderLayout },
+  { path: '/shop/notification', component: NotFound, layout: null },
+
+  { path: '/support', component: NotFound, layout: AdminLayout },
+  { path: '/support/report', component: NotFound, layout: AdminLayout },
+  { path: '/support/report/:report_id', component: NotFound, layout: AdminLayout },
+  { path: '/support/chat', component: NotFound, layout: AdminLayout },
+  { path: '/support/chat/:user_id', component: NotFound, layout: AdminLayout },
 
   { path: '/admin', component: NotFound, layout: AdminLayout },
   { path: '/admin/report', component: NotFound, layout: AdminLayout },
-  { path: '/admin/administrative', component: NotFound, layout: AdminLayout },
-  { path: '/admin/administrative/application', component: NotFound, layout: AdminLayout },
-  { path: '/admin/administrative/:item_id', component: NotFound, layout: AdminLayout },
-  { path: '/admin/administrative/:user_id', component: NotFound, layout: AdminLayout },
-  { path: '/admin/administrative/:vender_id', component: NotFound, layout: AdminLayout },
+  { path: '/admin/report/:report_id', component: NotFound, layout: AdminLayout },
+  { path: '/admin', component: NotFound, layout: AdminLayout },
+  { path: '/admin/application', component: NotFound, layout: AdminLayout },
+  { path: '/admin/application/:application_id', component: NotFound, layout: AdminLayout },
+  { path: '/admin/:item_id', component: NotFound, layout: AdminLayout },
+  { path: '/admin/:user_id', component: NotFound, layout: AdminLayout },
+  { path: '/admin/:vender_id', component: NotFound, layout: AdminLayout },
 ];
 
 export { publicRoutes, privateRoutes };
