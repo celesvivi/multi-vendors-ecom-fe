@@ -245,7 +245,7 @@ const HeaderComponent: React.FC = () => {
                 }}
               >
                 <Button
-                  onClick={() => navigate('/sign_in')}
+                  onClick={() => navigate('/front_user/signin')}
                   fullWidth
                   variant="contained"
                   sx={{
@@ -259,7 +259,7 @@ const HeaderComponent: React.FC = () => {
                   Sign in
                 </Button>
                 <Button
-                  onClick={() => navigate('/sign_up')}
+                  onClick={() => navigate('/front_user/signup')}
                   fullWidth
                   variant="text"
                   sx={{

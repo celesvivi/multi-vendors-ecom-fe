@@ -18,16 +18,16 @@ import { useNavigate } from 'react-router-dom';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
-import AdminPanelSettingsIcon from '@mui/icons-material/AdminPanelSettings';
-import SupportAgentIcon from '@mui/icons-material/SupportAgent';
+import GoogleIcon from '@mui/icons-material/Google';
+import FacebookIcon from '@mui/icons-material/Facebook';
+import TwitterIcon from '@mui/icons-material/Twitter';
 
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import ErrorIcon from '@mui/icons-material/Error';
 
-import background from '@/Assest/Background/EndUserSignIn.png';
-
+import background from '@/Assest/Background/FrontUserSignIn.png';
 import { UserRole, UserType } from '@/Types';
 import { signInBody } from '@/Types/payload';
 
@@ -37,10 +37,8 @@ import { afterSignInLink } from '@/Types/linked';
 
 import { defaultTheme } from '@/theme';
 
-const EndUserSigninPage: React.FC = () => {
+const VenderSigninPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const [role, setRole] = useState<UserRole>(UserRole.Support);
 
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string[]>([]);
@@ -96,7 +94,7 @@ const EndUserSigninPage: React.FC = () => {
     const payload: signInBody = {
       email: email,
       password: password,
-      userType: UserType.EndUser,
+      userType: UserType.FrontUser,
     };
 
     let res;
@@ -105,7 +103,7 @@ const EndUserSigninPage: React.FC = () => {
       res = await requestAPI(AUTH_API_URLS.SIGNIN, 'post', payload);
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('userId', res.data.user_id);
-      navigate(afterSignInLink[role]);
+      navigate(afterSignInLink[UserRole.Vender]);
     } catch (err: any) {
       if (err?.response?.status === 404) {
         setIsNotFound(true);
@@ -128,7 +126,7 @@ const EndUserSigninPage: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          bgcolor: '#109F8E',
+          bgcolor: '#EE4D2D',
           px: 32,
         }}
       >
@@ -165,51 +163,6 @@ const EndUserSigninPage: React.FC = () => {
           >
             Đăng nhập
           </Typography>
-
-          <ButtonGroup fullWidth sx={{ mb: 3 }}>
-            <Button
-              onClick={() => setRole(UserRole.Support)}
-              variant={role === UserRole.Support ? 'contained' : 'outlined'}
-              sx={{
-                borderRadius: '8px 0 0 8px',
-                textTransform: 'none',
-                fontWeight: 600,
-                bgcolor: role === UserRole.Support ? 'secondary.main' : 'transparent',
-                borderColor: 'secondary.main',
-                color: role === UserRole.Support ? 'white' : 'secondary.main',
-                '&:hover': {
-                  bgcolor: role === UserRole.Support ? 'secondary.heavy' : '#f0f0ff',
-                  borderColor: 'secondary.main',
-                },
-                py: 1.4,
-                gap: 1,
-              }}
-            >
-              Supporter
-              <SupportAgentIcon />
-            </Button>
-            <Button
-              onClick={() => setRole(UserRole.Admin)}
-              variant={role === UserRole.Admin ? 'contained' : 'outlined'}
-              sx={{
-                borderRadius: '0 8px 8px 0',
-                textTransform: 'none',
-                fontWeight: 600,
-                bgcolor: role === UserRole.Admin ? 'secondary.main' : 'transparent',
-                borderColor: 'secondary.main',
-                color: role === UserRole.Admin ? 'white' : 'secondary.main',
-                '&:hover': {
-                  bgcolor: role === UserRole.Admin ? 'secondary.heavy' : '#f0f0ff',
-                  borderColor: 'secondary.main',
-                },
-                py: 1.4,
-                gap: 1,
-              }}
-            >
-              <AdminPanelSettingsIcon />
-              Admin
-            </Button>
-          </ButtonGroup>
 
           {isNotFound && (
             <Box
@@ -251,11 +204,9 @@ const EndUserSigninPage: React.FC = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'secondary.main',
-                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
                 },
-                '& .MuiInputLabel-root.Mui-focused': { color: 'secondary.main' },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'primary.main' },
               }}
             />
           </Box>
@@ -297,11 +248,9 @@ const EndUserSigninPage: React.FC = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
-                    borderColor: 'secondary.main',
-                  },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
                 },
-                '& .MuiInputLabel-root.Mui-focused': { color: 'secondary.main' },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'primary.main' },
               }}
             />
           </Box>
@@ -315,7 +264,7 @@ const EndUserSigninPage: React.FC = () => {
                   size="small"
                   checked={remember}
                   onChange={(e) => setRemember(e.target.checked)}
-                  sx={{ color: 'secondary.main', '&.Mui-checked': { color: 'secondary.main' } }}
+                  sx={{ color: 'primary.main', '&.Mui-checked': { color: 'primary.main' } }}
                 />
               }
               label={
@@ -324,7 +273,7 @@ const EndUserSigninPage: React.FC = () => {
                 </Typography>
               }
             />
-            <Link href="#" underline="hover" variant="caption" sx={{ color: 'secondary.main' }}>
+            <Link href="#" underline="hover" variant="caption" sx={{ color: 'primary.main' }}>
               Forgot Password?
             </Link>
           </Box>
@@ -339,14 +288,14 @@ const EndUserSigninPage: React.FC = () => {
             fullWidth
             variant="contained"
             sx={{
-              bgcolor: 'secondary.main',
+              bgcolor: 'primary.main',
               borderRadius: 8,
               textTransform: 'none',
               fontWeight: 600,
               fontSize: 15,
               py: 1.4,
               mb: 2,
-              '&:hover': { bgcolor: 'secondary.heavy' },
+              '&:hover': { bgcolor: 'primary.heavy' },
               boxShadow: '0 4px 16px rgba(92,92,200,0.3)',
             }}
           >
@@ -358,4 +307,4 @@ const EndUserSigninPage: React.FC = () => {
   );
 };
 
-export default EndUserSigninPage;
+export default VenderSigninPage;

@@ -2,7 +2,6 @@ import { useEffect, useState } from 'react';
 import {
   Box,
   Button,
-  ButtonGroup,
   Checkbox,
   FormControlLabel,
   IconButton,
@@ -18,19 +17,13 @@ import { useNavigate } from 'react-router-dom';
 import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
 import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
-import GoogleIcon from '@mui/icons-material/Google';
-import FacebookIcon from '@mui/icons-material/Facebook';
-import TwitterIcon from '@mui/icons-material/Twitter';
-
-import StorefrontIcon from '@mui/icons-material/Storefront';
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-
 import AlternateEmailIcon from '@mui/icons-material/AlternateEmail';
 import LockOutlinedIcon from '@mui/icons-material/LockOutlined';
 
 import ErrorIcon from '@mui/icons-material/Error';
 
-import background from '@/Assest/Background/FrontUserSignIn.png';
+import background from '@/Assest/Background/EndUserSignIn.png';
+
 import { UserRole, UserType } from '@/Types';
 import { signInBody } from '@/Types/payload';
 
@@ -40,10 +33,8 @@ import { afterSignInLink } from '@/Types/linked';
 
 import { defaultTheme } from '@/theme';
 
-const FrontUserSigninPage: React.FC = () => {
+const SupportSigninPage: React.FC = () => {
   const navigate = useNavigate();
-
-  const [role, setRole] = useState<UserRole>(UserRole.Customer);
 
   const [email, setEmail] = useState('');
   const [emailError, setEmailError] = useState<string[]>([]);
@@ -99,7 +90,7 @@ const FrontUserSigninPage: React.FC = () => {
     const payload: signInBody = {
       email: email,
       password: password,
-      userType: UserType.FrontUser,
+      userType: UserType.EndUser,
     };
 
     let res;
@@ -108,7 +99,7 @@ const FrontUserSigninPage: React.FC = () => {
       res = await requestAPI(AUTH_API_URLS.SIGNIN, 'post', payload);
       localStorage.setItem('accessToken', res.data.accessToken);
       localStorage.setItem('userId', res.data.user_id);
-      navigate(afterSignInLink[role]);
+      navigate(afterSignInLink[UserRole.Support]);
     } catch (err: any) {
       if (err?.response?.status === 404) {
         setIsNotFound(true);
@@ -131,7 +122,7 @@ const FrontUserSigninPage: React.FC = () => {
           display: 'flex',
           alignItems: 'center',
           justifyContent: 'space-between',
-          bgcolor: '#EE4D2D',
+          bgcolor: '#109F8E',
           px: 32,
         }}
       >
@@ -168,49 +159,6 @@ const FrontUserSigninPage: React.FC = () => {
           >
             Đăng nhập
           </Typography>
-
-          <ButtonGroup fullWidth sx={{ mb: 3 }}>
-            <Button
-              onClick={() => setRole(UserRole.Customer)}
-              variant={role === UserRole.Customer ? 'contained' : 'outlined'}
-              sx={{
-                borderRadius: '8px 0 0 8px',
-                textTransform: 'none',
-                fontWeight: 600,
-                bgcolor: role === UserRole.Customer ? 'primary.main' : 'transparent',
-                borderColor: 'primary.main',
-                color: role === UserRole.Customer ? 'white' : 'primary.main',
-                '&:hover': {
-                  bgcolor: role === UserRole.Customer ? 'primary.heavy' : '#f0f0ff',
-                  borderColor: 'primary.main',
-                },
-                py: 1.4,
-                gap: 1,
-              }}
-            >
-              Customer <ShoppingCartIcon />
-            </Button>
-            <Button
-              onClick={() => setRole(UserRole.Vender)}
-              variant={role === UserRole.Vender ? 'contained' : 'outlined'}
-              sx={{
-                borderRadius: '0 8px 8px 0',
-                textTransform: 'none',
-                fontWeight: 600,
-                bgcolor: role === UserRole.Vender ? 'primary.main' : 'transparent',
-                borderColor: 'primary.main',
-                color: role === UserRole.Vender ? 'white' : 'primary.main',
-                '&:hover': {
-                  bgcolor: role === UserRole.Vender ? 'primary.heavy' : '#f0f0ff',
-                  borderColor: 'primary.main',
-                },
-                py: 1.4,
-                gap: 1,
-              }}
-            >
-              <StorefrontIcon /> Vendor
-            </Button>
-          </ButtonGroup>
 
           {isNotFound && (
             <Box
@@ -252,9 +200,11 @@ const FrontUserSigninPage: React.FC = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'secondary.main',
+                  },
                 },
-                '& .MuiInputLabel-root.Mui-focused': { color: 'primary.main' },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'secondary.main' },
               }}
             />
           </Box>
@@ -296,9 +246,11 @@ const FrontUserSigninPage: React.FC = () => {
               sx={{
                 '& .MuiOutlinedInput-root': {
                   '&:has(input:-webkit-autofill)': { backgroundColor: '#faffbd' },
-                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': { borderColor: 'primary.main' },
+                  '&.Mui-focused .MuiOutlinedInput-notchedOutline': {
+                    borderColor: 'secondary.main',
+                  },
                 },
-                '& .MuiInputLabel-root.Mui-focused': { color: 'primary.main' },
+                '& .MuiInputLabel-root.Mui-focused': { color: 'secondary.main' },
               }}
             />
           </Box>
@@ -312,7 +264,7 @@ const FrontUserSigninPage: React.FC = () => {
                   size="small"
                   checked={remember}
                   onChange={(e) => setRemember(e.target.checked)}
-                  sx={{ color: 'primary.main', '&.Mui-checked': { color: 'primary.main' } }}
+                  sx={{ color: 'secondary.main', '&.Mui-checked': { color: 'secondary.main' } }}
                 />
               }
               label={
@@ -321,7 +273,7 @@ const FrontUserSigninPage: React.FC = () => {
                 </Typography>
               }
             />
-            <Link href="#" underline="hover" variant="caption" sx={{ color: 'primary.main' }}>
+            <Link href="#" underline="hover" variant="caption" sx={{ color: 'secondary.main' }}>
               Forgot Password?
             </Link>
           </Box>
@@ -336,71 +288,23 @@ const FrontUserSigninPage: React.FC = () => {
             fullWidth
             variant="contained"
             sx={{
-              bgcolor: 'primary.main',
+              bgcolor: 'secondary.main',
               borderRadius: 8,
               textTransform: 'none',
               fontWeight: 600,
               fontSize: 15,
               py: 1.4,
               mb: 2,
-              '&:hover': { bgcolor: 'primary.heavy' },
+              '&:hover': { bgcolor: 'secondary.heavy' },
               boxShadow: '0 4px 16px rgba(92,92,200,0.3)',
             }}
           >
             Log In
           </Button>
-
-          <Box sx={{ mb: 2, alignItems: 'center', display: 'flex', gap: 1.5 }}>
-            <Box sx={{ bgcolor: '#e0e0e0', flex: 1, height: '1px' }} />
-            <Typography variant="caption" color="text.secondary">
-              OR
-            </Typography>
-            <Box sx={{ bgcolor: '#e0e0e0', flex: 1, height: '1px' }} />
-          </Box>
-
-          <Box sx={{ display: 'flex', justifyContent: 'center', gap: 2, mb: 3 }}>
-            <IconButton
-              sx={{
-                border: '1px solid #e0e0e0',
-                borderRadius: 2,
-                p: 1,
-                '&:hover': { bgcolor: '#f0f5ff' },
-              }}
-            >
-              <FacebookIcon />
-            </IconButton>
-            <IconButton
-              sx={{
-                border: '1px solid #e0e0e0',
-                borderRadius: 2,
-                p: 1,
-                '&:hover': { bgcolor: '#fff5f5' },
-              }}
-            >
-              <GoogleIcon />
-            </IconButton>
-            <IconButton
-              sx={{
-                border: '1px solid #e0e0e0',
-                borderRadius: 2,
-                p: 1,
-                '&:hover': { bgcolor: '#f0faff' },
-              }}
-            >
-              <TwitterIcon />
-            </IconButton>
-          </Box>
-
-          <Typography variant="body2" sx={{ textAlign: 'center', color: 'text.secondary' }}>
-            Don't have account?{' '}
-            <Link href="#" sx={{ color: '#1a1a6e', underline: 'hover', fontWeight: 700 }}>
-              SignUp
-            </Link>
-          </Typography>
         </Box>
       </Box>
     </ThemeProvider>
   );
 };
 
-export default FrontUserSigninPage;
+export default SupportSigninPage;

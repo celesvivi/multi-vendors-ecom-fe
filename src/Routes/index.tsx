@@ -7,8 +7,9 @@ import DefaultLayout from '@/Layouts/Default';
 import VenderLayout from '@/Layouts/Vendor';
 import AdminLayout from '@/Layouts/Admin';
 
-import FrontUserSigninPage from '@/Pages/FrontUserSignIn';
-import FrontUserSignupPage from '@/Pages/FrontUserSignUp';
+import CustomerSigninPage from '@/Pages/CustomerSignIn';
+import CustomerSignupPage from '@/Pages/CustomerSignUp';
+import VenderSigninPage from '@/Pages/VenderSignIn';
 import EndUserSigninPage from '@/Pages/EndUserSignIn';
 import SigninLayout from '@/Layouts/Signin';
 
@@ -19,8 +20,10 @@ const publicRoutes: IRoute[] = [
   { path: '/item/:id', component: NotFound, layout: DefaultLayout },
   { path: '/brand/:id', component: NotFound, layout: DefaultLayout },
   { path: '/flashdeal', component: NotFound, layout: DefaultLayout },
-  { path: '/front_user/signin', component: FrontUserSigninPage, layout: SigninLayout },
-  { path: '/front_user/signup', component: FrontUserSignupPage, layout: SigninLayout },
+  { path: '/customer/signin', component: CustomerSigninPage, layout: SigninLayout },
+  { path: '/customer/signup', component: CustomerSignupPage, layout: SigninLayout },
+  { path: '/vender/signin', component: VenderSigninPage, layout: SigninLayout },
+  { path: '/vender/application', component: CustomerSignupPage, layout: SigninLayout },
   { path: '/end_user/signin', component: EndUserSigninPage, layout: SigninLayout },
 ];
 
